@@ -1,0 +1,25 @@
+{
+  "name": "uteel-sender",
+  "version": "1.0.0",
+  "description": "simple message sending service",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register -r babel-polyfill --timeout 10000",
+    "build": "babel source -d dist",
+    "prepublish": "npm run build"
+  },
+  "author": "Louis Grellet <as1cron@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "babel-register": "^6.24.1",
+    "isomorphic-fetch": "^2.2.1",
+    "mustache": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.5.2",
+    "chai": "^4.1.0"
+  }
+}
