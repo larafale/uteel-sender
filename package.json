@@ -1,7 +1,7 @@
 {
   "name": "uteel-sender",
   "version": "1.0.0",
-  "description": "simple message sending service",
+  "description": "simple sending service",
   "main": "./dist/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register -r babel-polyfill --timeout 10000",

@@ -1,22 +1,26 @@
-# Simple router
+# Simple sending service
 
 ### Install
 ```
-npm i uteel-router
+npm i uteel-sender
 ```
 
 ### Usage
 ```js
-import { router as Router, get, post } from 'uteel-router'
+import Sender from 'uteel-sender'
+import Twilio from 'twilio'
 
-const router = Router(
-    get('/users', handler)
-  , post('/users/:slug', handler)
-)
+const handler = async ({ body }, to) => Twilio.send({ 
+    phone: to
+  , message: body
+  , apikey: 'xxxx' 
+})
+
+const SMS = Sender(handler)
+
+SMS.send({ body: 'Hello brother' }, '+33608033428')
 ```
 
-### Infos
-The router follow the standard `(req, res)` signature
 
 ### Test
 ```
