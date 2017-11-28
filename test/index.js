@@ -1,34 +1,49 @@
 import chai, { expect, assert } from 'chai'
 chai.should() // enhance objects
-
-
 import Sender from '../source'
+
+const mock = {
+    payload: { title: '{{name}}', body: '{{foo.bar}}' }
+  , to: ''
+  , subs: { name: 'foo', foo: { bar: 'baz' } }
+}
+
+const handler = async (payload, to, subs, { renderKeys }) 
+  => ({ 
+    ...payload, 
+    ...renderKeys(payload, subs, ['body', 'title']) 
+  })
+
+const initPayload = async (name, subs) 
+  => mock.payload
+
+const myService = Sender(handler, initPayload)
+
 
 
 
 describe('Sender', async (done) => {
 
-  const sendHandler = async (payload) => payload
-  const templateHandler = templates => async (name, { interpolate, subs }) => interpolate(templates[name], subs)
-  const templates = { signup: 'Hello {{name}}' }
-  const myService = Sender(sendHandler, templateHandler(templates))
+  // before(done => done())
 
-  before(done => done())
+  describe('message', () => {
 
-  describe('send', () => {
-
-    it('message', async done => {
-      let payload = { title: 'my title', body: 'my body' }
-      let message = await myService.send(payload, 'louis@gmail.com')
-
-      assert.equal(message.title, 'my title')
-      done()
+    it('send()', async done => {
+      try {
+        let message = await myService.send(mock.payload, mock.to, mock.subs)
+        assert.equal(message.title, 'foo')
+        assert.equal(message.body, 'baz')
+        done()
+      }catch(e){ done(e) }
     })
 
-    it('template', async done => {
-      let message = await myService.template('signup', 'louis@gmail.com', { name: 'Louis' })
-      assert.equal(message, 'Hello Louis')
-      done()
+    it('template()', async done => {
+      try {
+        let message = await myService.template('templateName', mock.to, mock.subs)
+        assert.equal(message.title, 'foo')
+        assert.equal(message.body, 'baz')
+        done()
+      }catch(e){ done(e) }
     })
 
     // it('timeout', done => setTimeout(done, 3000))
